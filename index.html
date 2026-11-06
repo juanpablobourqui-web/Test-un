@@ -2,8 +2,16 @@
 <html lang="fr">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Parle Anglais</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Parle Anglais">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="theme-color" content="#f6f5f1" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#141416" media="(prefers-color-scheme: dark)">
 <style>
 :root {
   --bg: #f6f5f1; --surface: #ffffff; --text: #1c1c1e; --muted: #6b6b70;
@@ -25,12 +33,12 @@
 * { box-sizing: border-box; }
 body { margin: 0; background: var(--bg); color: var(--text);
   font: 16px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
-.wrap { max-width: 720px; margin: 0 auto; padding-block: 20px 48px;
+.wrap { max-width: 720px; margin: 0 auto; padding-top: calc(20px + env(safe-area-inset-top, 0px)); padding-bottom: calc(48px + env(safe-area-inset-bottom, 0px));
   padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
 header h1 { margin: 0; font-size: 1.6rem; }
 header p { margin: 4px 0 16px; color: var(--muted); }
-nav { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 16px; }
-nav button { flex: 1 1 auto; }
+nav { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-bottom: 16px; }
+@media (max-width: 560px) { nav { grid-template-columns: 1fr 1fr; } }
 button { font: inherit; border: 1px solid var(--line); background: var(--surface); color: var(--text);
   padding: 10px 14px; border-radius: 10px; cursor: pointer; }
 button:hover { border-color: var(--accent); }
@@ -376,6 +384,9 @@ $("tabs").addEventListener("click", e => {
 $("theme").innerHTML = themes.map(t => `<option${t === theme ? " selected" : ""}>${esc(t)}</option>`).join("");
 $("theme").onchange = () => { theme = $("theme").value; store.set("pa-theme", theme); refresh(); };
 renderProgress(); refresh();
+if ("serviceWorker" in navigator && location.protocol === "https:") {
+  navigator.serviceWorker.register("sw.js").catch(() => {});
+}
 </script>
 </body>
 </html>

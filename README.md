@@ -4,11 +4,15 @@
 
 **Parle Anglais** est une petite application web pour apprendre l'anglais parlé quand on est francophone.
 
-## Utilisation
+## Installer l'application sur iPhone
 
-Version en ligne : https://claude.ai/artifact/Jt2QuPXtJnq86EfMtnVana (le micro n'y fonctionne pas).
+1. Ouvre **Safari** et va sur https://juanpablobourqui-web.github.io/Test-un/
+2. Touche le bouton **Partager** (le carré avec une flèche vers le haut).
+3. Choisis **Sur l'écran d'accueil**, puis **Ajouter**.
 
-Ou ouvre `index.html` dans ton navigateur (Chrome ou Edge conseillés). Rien à installer.
+L'icône **Parle Anglais** apparaît sur l'écran d'accueil. L'application s'ouvre en plein écran et marche aussi sans Internet.
+
+## Ce que fait l'application
 
 - **📖 Apprendre** : liste des phrases par thème, avec la traduction, des astuces et l'audio.
 - **🃏 Cartes** : lis la phrase en français, dis-la en anglais, puis vérifie.
