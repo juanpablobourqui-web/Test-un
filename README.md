@@ -14,10 +14,10 @@ L'icône **Parle Anglais** apparaît sur l'écran d'accueil. L'application s'ouv
 
 ## Ce que fait l'application
 
-- **📖 Apprendre** : liste des phrases par thème, avec la traduction, des astuces et l'audio.
-- **🃏 Cartes** : lis la phrase en français, dis-la en anglais, puis vérifie.
-- **🎤 Parler** : prononce la phrase au micro. L'application te dit ce qu'elle a compris et te donne un score.
-- **✅ Quiz** : 6 questions à choix multiples par thème.
+- **Parcours** : 6 unités (Salutations, Se présenter, Au restaurant, Voyage, Conversation, Au travail), 4 leçons chacune, à débloquer une par une.
+- **Exercices variés** : choisir la traduction, écouter et comprendre, construire la phrase avec des mots, associer des paires, parler au micro.
+- **Motivation** : XP, série de jours 🔥, objectif quotidien, sons et confettis.
+- **Les erreurs reviennent** à la fin de la leçon, et l'**entraînement express** cible les phrases ratées.
+- **Révision** : toutes les phrases avec l'audio.
 
-Thèmes : Salutations, Se présenter, Au restaurant, Voyage, Conversation, Au travail.
-La progression est enregistrée dans le navigateur.
+La progression est enregistrée sur le téléphone.
