@@ -1,9 +1,9 @@
-# Publie l'application sur GitHub Pages à chaque mise à jour de main.
+# Publie l'application sur GitHub Pages à chaque mise à jour.
 name: Publier l'application
 
 on:
   push:
-    branches: [main]
+    branches: [main, claude/test-un-repo-setup-2ajz66]
   workflow_dispatch:
 
 permissions:
