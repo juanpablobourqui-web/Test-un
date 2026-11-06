@@ -1,0 +1,380 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Parle Anglais</title>
+<style>
+:root {
+  --bg: #f6f5f1; --surface: #ffffff; --text: #1c1c1e; --muted: #6b6b70;
+  --line: #e4e2dc; --accent: #2457d6; --accent-soft: #e6ecfb;
+  --good: #1f8a4c; --good-soft: #e3f4ea; --bad: #c0392b; --bad-soft: #fbe7e4;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #141416; --surface: #1e1e21; --text: #f1f1f3; --muted: #a0a0a8;
+    --line: #2e2e33; --accent: #7aa2ff; --accent-soft: #23304f;
+    --good: #5fd08d; --good-soft: #193526; --bad: #ff8a7a; --bad-soft: #3d201c;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #141416; --surface: #1e1e21; --text: #f1f1f3; --muted: #a0a0a8;
+  --line: #2e2e33; --accent: #7aa2ff; --accent-soft: #23304f;
+  --good: #5fd08d; --good-soft: #193526; --bad: #ff8a7a; --bad-soft: #3d201c;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--text);
+  font: 16px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+.wrap { max-width: 720px; margin: 0 auto; padding: 20px 16px 48px; }
+header h1 { margin: 0; font-size: 1.6rem; }
+header p { margin: 4px 0 16px; color: var(--muted); }
+nav { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 16px; }
+nav button { flex: 1 1 auto; }
+button { font: inherit; border: 1px solid var(--line); background: var(--surface); color: var(--text);
+  padding: 10px 14px; border-radius: 10px; cursor: pointer; }
+button:hover { border-color: var(--accent); }
+button.active, button.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+:root[data-theme="dark"] button.active, :root[data-theme="dark"] button.primary { color: #10131a; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) button.active,
+  :root:not([data-theme="light"]) button.primary { color: #10131a; } }
+button:disabled { opacity: .5; cursor: default; }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 18px; margin-bottom: 12px; }
+.row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.between { justify-content: space-between; }
+select { font: inherit; padding: 9px 10px; border-radius: 10px; border: 1px solid var(--line);
+  background: var(--surface); color: var(--text); max-width: 100%; }
+.en { font-size: 1.45rem; font-weight: 600; margin: 6px 0; }
+.fr { color: var(--muted); }
+.tip { font-size: .9rem; color: var(--muted); font-style: italic; }
+.list .item { display: flex; gap: 10px; align-items: center; padding: 10px 0; border-top: 1px solid var(--line); }
+.list .item:first-child { border-top: 0; }
+.list .item div { flex: 1; min-width: 0; }
+.list .item b { display: block; }
+.icon { padding: 8px 11px; min-width: 42px; }
+.choices { display: grid; gap: 8px; margin-top: 12px; }
+.choices button { text-align: left; }
+.choices button.ok { background: var(--good-soft); border-color: var(--good); color: var(--text); }
+.choices button.ko { background: var(--bad-soft); border-color: var(--bad); color: var(--text); }
+.feedback { margin-top: 12px; padding: 10px 12px; border-radius: 10px; }
+.feedback.ok { background: var(--good-soft); color: var(--good); }
+.feedback.ko { background: var(--bad-soft); color: var(--bad); }
+.feedback.info { background: var(--accent-soft); color: var(--text); }
+.bar { height: 8px; background: var(--line); border-radius: 99px; overflow: hidden; margin-top: 6px; }
+.bar span { display: block; height: 100%; background: var(--accent); }
+.muted { color: var(--muted); font-size: .9rem; }
+.big { font-size: 2rem; font-weight: 700; }
+.hidden { display: none; }
+label.inline { display: flex; align-items: center; gap: 8px; color: var(--muted); font-size: .9rem; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>Parle Anglais 🇬🇧</h1>
+    <p>Apprends à parler anglais : écoute, répète, teste-toi.</p>
+  </header>
+
+  <nav id="tabs">
+    <button data-tab="learn" class="active">📖 Apprendre</button>
+    <button data-tab="flash">🃏 Cartes</button>
+    <button data-tab="speak">🎤 Parler</button>
+    <button data-tab="quiz">✅ Quiz</button>
+  </nav>
+
+  <div class="card row between">
+    <select id="theme" aria-label="Thème"></select>
+    <label class="inline">Vitesse
+      <select id="rate" aria-label="Vitesse de la voix">
+        <option value="0.7">Lente</option>
+        <option value="0.9" selected>Normale</option>
+        <option value="1.05">Rapide</option>
+      </select>
+    </label>
+  </div>
+
+  <section id="learn"><div class="card list" id="learnList"></div></section>
+
+  <section id="flash" class="hidden">
+    <div class="card">
+      <div class="muted" id="flashCount"></div>
+      <div class="fr" id="flashFr" style="font-size:1.25rem;margin-top:8px"></div>
+      <div class="en hidden" id="flashEn"></div>
+      <div class="tip hidden" id="flashTip"></div>
+      <div class="row" style="margin-top:14px">
+        <button class="primary" id="flashShow">Voir la réponse</button>
+        <button id="flashListen">🔊 Écouter</button>
+        <button id="flashNext">Suivante →</button>
+      </div>
+    </div>
+    <p class="muted">Lis la phrase en français, essaie de la dire en anglais à voix haute, puis regarde la réponse.</p>
+  </section>
+
+  <section id="speak" class="hidden">
+    <div class="card">
+      <div class="muted">Dis cette phrase en anglais :</div>
+      <div class="en" id="speakEn"></div>
+      <div class="fr" id="speakFr"></div>
+      <div class="row" style="margin-top:14px">
+        <button id="speakListen">🔊 Écouter</button>
+        <button class="primary" id="speakMic">🎤 Parler</button>
+        <button id="speakNext">Suivante →</button>
+      </div>
+      <div id="speakResult"></div>
+    </div>
+    <p class="muted" id="speakNote">Le micro marche le mieux dans Chrome ou Edge. Autorise l'accès au micro quand le navigateur le demande.</p>
+  </section>
+
+  <section id="quiz" class="hidden">
+    <div class="card" id="quizCard"></div>
+  </section>
+
+  <div class="card">
+    <div class="row between"><b>Ta progression</b><span class="muted" id="progressTxt"></span></div>
+    <div class="bar"><span id="progressBar" style="width:0"></span></div>
+  </div>
+</div>
+
+<script>
+const DATA = {
+  "Salutations": [
+    ["Hello! How are you?", "Bonjour ! Comment ça va ?", "« How are you » se prononce presque « Haou-ar-You »."],
+    ["I'm fine, thank you. And you?", "Je vais bien, merci. Et toi ?", "Le « th » de « thank » : langue entre les dents."],
+    ["Nice to meet you.", "Enchanté(e).", ""],
+    ["Good morning!", "Bonjour ! (le matin)", "On dit « Good afternoon » l'après-midi et « Good evening » le soir."],
+    ["See you later!", "À plus tard !", ""],
+    ["Have a nice day!", "Bonne journée !", ""],
+    ["Goodbye!", "Au revoir !", ""],
+    ["Excuse me.", "Excusez-moi.", "Pour attirer l'attention de quelqu'un poliment."]
+  ],
+  "Se présenter": [
+    ["My name is Juan.", "Je m'appelle Juan.", "Remplace par ton prénom !"],
+    ["I'm from France.", "Je viens de France.", ""],
+    ["I live in Paris.", "J'habite à Paris.", "« live » : le « i » est court, comme dans « lit »."],
+    ["I'm thirty years old.", "J'ai trente ans.", "En anglais on « est » son âge : I am… years old."],
+    ["I work as a teacher.", "Je travaille comme professeur.", ""],
+    ["I'm learning English.", "J'apprends l'anglais.", ""],
+    ["I like music and sports.", "J'aime la musique et le sport.", ""],
+    ["What about you?", "Et toi ?", ""]
+  ],
+  "Au restaurant": [
+    ["A table for two, please.", "Une table pour deux, s'il vous plaît.", ""],
+    ["Can I see the menu, please?", "Je peux voir la carte, s'il vous plaît ?", "« Menu » = la carte."],
+    ["I would like a coffee.", "Je voudrais un café.", "« I'd like » est la forme courte, très utilisée."],
+    ["What do you recommend?", "Qu'est-ce que vous me conseillez ?", ""],
+    ["I'm allergic to nuts.", "Je suis allergique aux fruits à coque.", ""],
+    ["Can I have some water?", "Je peux avoir de l'eau ?", ""],
+    ["The check, please.", "L'addition, s'il vous plaît.", "En anglais britannique : « The bill, please »."],
+    ["It was delicious!", "C'était délicieux !", ""]
+  ],
+  "Voyage": [
+    ["Where is the train station?", "Où est la gare ?", ""],
+    ["How much is a ticket?", "Combien coûte un billet ?", ""],
+    ["I have a reservation.", "J'ai une réservation.", ""],
+    ["Can you help me, please?", "Pouvez-vous m'aider, s'il vous plaît ?", ""],
+    ["I'm lost.", "Je suis perdu(e).", ""],
+    ["Is it far from here?", "C'est loin d'ici ?", ""],
+    ["Turn left, then go straight.", "Tournez à gauche, puis allez tout droit.", "right = droite, left = gauche, straight = tout droit."],
+    ["What time does it leave?", "À quelle heure part-il ?", ""]
+  ],
+  "Conversation": [
+    ["Can you repeat, please?", "Pouvez-vous répéter, s'il vous plaît ?", "La phrase la plus utile quand on débute !"],
+    ["Could you speak more slowly?", "Pourriez-vous parler plus lentement ?", ""],
+    ["I don't understand.", "Je ne comprends pas.", ""],
+    ["What does this mean?", "Qu'est-ce que ça veut dire ?", ""],
+    ["How do you say … in English?", "Comment dit-on … en anglais ?", ""],
+    ["I think so.", "Je crois que oui.", ""],
+    ["That's a good idea.", "C'est une bonne idée.", ""],
+    ["No problem.", "Pas de problème.", ""]
+  ],
+  "Au travail": [
+    ["Nice to meet you, I'm the new colleague.", "Enchanté(e), je suis le nouveau / la nouvelle collègue.", ""],
+    ["Do you have a minute?", "Tu as une minute ?", ""],
+    ["Let's schedule a meeting.", "Organisons une réunion.", ""],
+    ["I'll send you an email.", "Je t'enverrai un e-mail.", ""],
+    ["I'm working on it.", "Je suis en train de m'en occuper.", ""],
+    ["Could you send me the file?", "Pourrais-tu m'envoyer le fichier ?", ""],
+    ["I agree with you.", "Je suis d'accord avec toi.", "Attention : on ne dit pas « I am agree »."],
+    ["Thank you for your help.", "Merci pour ton aide.", ""]
+  ]
+};
+
+const store = {
+  get(k, d) { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch (e) { return d; } },
+  set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
+};
+let known = store.get("pa-known", {});
+const $ = id => document.getElementById(id);
+const themes = Object.keys(DATA);
+let theme = store.get("pa-theme", themes[0]);
+if (!DATA[theme]) theme = themes[0];
+
+function esc(s) { return s.replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c])); }
+function shuffle(a) { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
+function phrases() { return DATA[theme]; }
+
+// --- Voix ---
+let voice = null;
+function pickVoice() {
+  if (!("speechSynthesis" in window)) return;
+  const vs = speechSynthesis.getVoices().filter(v => v.lang && v.lang.toLowerCase().startsWith("en"));
+  voice = vs.find(v => /en-(US|GB)/i.test(v.lang) && /natural|google|samantha|daniel/i.test(v.name)) || vs.find(v => /en-(US|GB)/i.test(v.lang)) || vs[0] || null;
+}
+if ("speechSynthesis" in window) { pickVoice(); speechSynthesis.onvoiceschanged = pickVoice; }
+function say(text) {
+  if (!("speechSynthesis" in window)) { alert("Ton navigateur ne peut pas lire le texte à voix haute."); return; }
+  speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text.replace("…", "something"));
+  u.lang = voice ? voice.lang : "en-US";
+  if (voice) u.voice = voice;
+  u.rate = parseFloat($("rate").value);
+  speechSynthesis.speak(u);
+}
+
+// --- Progression ---
+function markKnown(en) { known[en] = true; store.set("pa-known", known); renderProgress(); }
+function renderProgress() {
+  const all = themes.flatMap(t => DATA[t].map(p => p[0]));
+  const n = all.filter(e => known[e]).length;
+  $("progressTxt").textContent = n + " / " + all.length + " phrases maîtrisées";
+  $("progressBar").style.width = (100 * n / all.length) + "%";
+}
+
+// --- Apprendre ---
+function renderLearn() {
+  $("learnList").innerHTML = phrases().map((p, i) =>
+    `<div class="item"><button class="icon" data-say="${i}" aria-label="Écouter">🔊</button>
+     <div><b>${esc(p[0])}</b><span class="fr">${esc(p[1])}</span>${p[2] ? `<div class="tip">${esc(p[2])}</div>` : ""}</div>
+     <span title="Maîtrisée">${known[p[0]] ? "✅" : ""}</span></div>`).join("");
+}
+$("learnList").addEventListener("click", e => {
+  const b = e.target.closest("[data-say]"); if (b) say(phrases()[+b.dataset.say][0]);
+});
+
+// --- Cartes ---
+let flashOrder = [], flashI = 0;
+function startFlash() { flashOrder = shuffle(phrases()); flashI = 0; showFlash(); }
+function showFlash() {
+  const p = flashOrder[flashI];
+  $("flashCount").textContent = "Carte " + (flashI + 1) + " / " + flashOrder.length;
+  $("flashFr").textContent = p[1];
+  $("flashEn").textContent = p[0]; $("flashTip").textContent = p[2];
+  $("flashEn").classList.add("hidden"); $("flashTip").classList.add("hidden");
+  $("flashShow").disabled = false;
+}
+$("flashShow").onclick = () => {
+  $("flashEn").classList.remove("hidden");
+  if (flashOrder[flashI][2]) $("flashTip").classList.remove("hidden");
+  $("flashShow").disabled = true; say(flashOrder[flashI][0]);
+};
+$("flashListen").onclick = () => say(flashOrder[flashI][0]);
+$("flashNext").onclick = () => { flashI = (flashI + 1) % flashOrder.length; if (flashI === 0) flashOrder = shuffle(phrases()); showFlash(); };
+
+// --- Parler ---
+const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+let speakOrder = [], speakI = 0, listening = false, rec = null;
+function startSpeak() { speakOrder = shuffle(phrases()); speakI = 0; showSpeak(); }
+function showSpeak() {
+  const p = speakOrder[speakI];
+  $("speakEn").textContent = p[0]; $("speakFr").textContent = p[1]; $("speakResult").innerHTML = "";
+}
+function words(s) { return s.toLowerCase().replace(/[’']/g, "'").replace(/[^a-z0-9' ]/g, " ").split(/\s+/).filter(Boolean); }
+function score(target, heard) {
+  const t = words(target).filter(w => w !== "…"), h = new Set(words(heard));
+  const hit = t.filter(w => h.has(w)).length;
+  return t.length ? Math.round(100 * hit / t.length) : 0;
+}
+if (!SR) {
+  $("speakMic").disabled = true;
+  $("speakNote").textContent = "Ton navigateur ne reconnaît pas la voix. Essaie avec Chrome ou Edge, ou entraîne-toi en répétant après l'audio.";
+}
+$("speakListen").onclick = () => say(speakOrder[speakI][0]);
+$("speakNext").onclick = () => { speakI = (speakI + 1) % speakOrder.length; showSpeak(); };
+$("speakMic").onclick = () => {
+  if (!SR) return;
+  if (listening && rec) { rec.stop(); return; }
+  rec = new SR(); rec.lang = "en-US"; rec.interimResults = false; rec.maxAlternatives = 3;
+  listening = true; $("speakMic").textContent = "⏹ Arrêter";
+  $("speakResult").innerHTML = `<div class="feedback info">J'écoute… parle maintenant.</div>`;
+  rec.onresult = ev => {
+    const target = speakOrder[speakI][0];
+    const alts = Array.from(ev.results[0]).map(a => a.transcript);
+    let best = alts[0], bestS = -1;
+    alts.forEach(a => { const s = score(target, a); if (s > bestS) { bestS = s; best = a; } });
+    const ok = bestS >= 80;
+    if (ok) markKnown(target);
+    $("speakResult").innerHTML = `<div class="feedback ${ok ? "ok" : "ko"}">
+      <div>J'ai entendu : « ${esc(best)} »</div>
+      <b>${bestS}% — ${ok ? "Bravo, très bien prononcé ! 🎉" : bestS >= 50 ? "Presque ! Écoute encore et réessaie." : "Écoute l'audio et réessaie."}</b></div>`;
+  };
+  rec.onerror = ev => {
+    const msg = ev.error === "not-allowed" ? "L'accès au micro a été refusé. Autorise-le dans les réglages du navigateur."
+      : ev.error === "no-speech" ? "Je n'ai rien entendu. Réessaie en parlant un peu plus fort." : "Erreur du micro : " + ev.error;
+    $("speakResult").innerHTML = `<div class="feedback ko">${msg}</div>`;
+  };
+  rec.onend = () => { listening = false; $("speakMic").textContent = "🎤 Parler"; };
+  try { rec.start(); } catch (e) { listening = false; $("speakMic").textContent = "🎤 Parler"; }
+};
+
+// --- Quiz ---
+let quiz = null;
+function startQuiz() {
+  const qs = shuffle(phrases()).slice(0, 6).map((p, i) => {
+    const toEn = i % 2 === 0;
+    const pool = shuffle(themes.flatMap(t => DATA[t]).filter(x => x !== p)).slice(0, 3);
+    const opts = shuffle([p, ...pool]);
+    return { p, toEn, opts };
+  });
+  quiz = { qs, i: 0, good: 0, answered: false };
+  showQuiz();
+}
+function showQuiz() {
+  const c = $("quizCard");
+  if (quiz.i >= quiz.qs.length) {
+    const n = quiz.good, t = quiz.qs.length;
+    c.innerHTML = `<div class="muted">Résultat</div><div class="big">${n} / ${t}</div>
+      <p>${n === t ? "Parfait ! 🏆" : n >= t / 2 ? "Bien joué ! Continue comme ça." : "Révise un peu le thème et recommence."}</p>
+      <button class="primary" id="quizAgain">Recommencer</button>`;
+    $("quizAgain").onclick = startQuiz; return;
+  }
+  const q = quiz.qs[quiz.i];
+  quiz.answered = false;
+  c.innerHTML = `<div class="muted">Question ${quiz.i + 1} / ${quiz.qs.length} — ${q.toEn ? "Comment dit-on en anglais ?" : "Que veut dire cette phrase ?"}</div>
+    <div class="en">${esc(q.toEn ? q.p[1] : q.p[0])}</div>
+    ${q.toEn ? "" : `<button class="icon" id="quizSay">🔊</button>`}
+    <div class="choices">${q.opts.map((o, k) => `<button data-k="${k}">${esc(q.toEn ? o[0] : o[1])}</button>`).join("")}</div>
+    <div id="quizFb"></div>`;
+  if (!q.toEn) { $("quizSay").onclick = () => say(q.p[0]); say(q.p[0]); }
+  c.querySelectorAll("[data-k]").forEach(b => b.onclick = () => {
+    if (quiz.answered) return; quiz.answered = true;
+    const right = q.opts[+b.dataset.k] === q.p;
+    c.querySelectorAll("[data-k]").forEach(x => { if (q.opts[+x.dataset.k] === q.p) x.classList.add("ok"); });
+    if (!right) b.classList.add("ko"); else { quiz.good++; markKnown(q.p[0]); }
+    $("quizFb").innerHTML = `<div class="feedback ${right ? "ok" : "ko"}">${right ? "Correct !" : "La bonne réponse : " + esc(q.toEn ? q.p[0] : q.p[1])}</div>
+      <div class="row" style="margin-top:10px"><button id="quizSay2">🔊 Écouter</button><button class="primary" id="quizNext">Suivante →</button></div>`;
+    $("quizSay2").onclick = () => say(q.p[0]);
+    $("quizNext").onclick = () => { quiz.i++; showQuiz(); };
+  });
+}
+
+// --- Navigation ---
+let tab = "learn";
+function refresh() {
+  if (tab === "learn") renderLearn();
+  if (tab === "flash") startFlash();
+  if (tab === "speak") startSpeak();
+  if (tab === "quiz") startQuiz();
+}
+$("tabs").addEventListener("click", e => {
+  const b = e.target.closest("[data-tab]"); if (!b) return;
+  tab = b.dataset.tab;
+  document.querySelectorAll("#tabs button").forEach(x => x.classList.toggle("active", x === b));
+  ["learn", "flash", "speak", "quiz"].forEach(id => $(id).classList.toggle("hidden", id !== tab));
+  if ("speechSynthesis" in window) speechSynthesis.cancel();
+  refresh();
+});
+$("theme").innerHTML = themes.map(t => `<option${t === theme ? " selected" : ""}>${esc(t)}</option>`).join("");
+$("theme").onchange = () => { theme = $("theme").value; store.set("pa-theme", theme); refresh(); };
+renderProgress(); refresh();
+</script>
+</body>
+</html>
