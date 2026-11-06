@@ -26,3 +26,16 @@ La progression est enregistrée sur le téléphone.
 
 - Aperçu en ligne (sans micro) : https://claude.ai/artifact/Jt2QuPXtJnq86EfMtnVana
 - Sur ordinateur : télécharge `index.html` et ouvre-le dans Chrome ou Edge.
+
+---
+
+# Ma Journée
+
+Une deuxième appli pour organiser ta journée : https://juanpablobourqui-web.github.io/Test-un/journee/
+
+- **Journée** : tes tâches en liste ou en planning heure par heure, avec la semaine en haut.
+- **Priorités ⭐**, catégories de couleur, durée, et report à demain.
+- **Routines** qui reviennent toutes seules (tous les jours, en semaine ou certains jours).
+- **Focus** : minuteur de concentration 25 min / pause 5 min.
+
+Installation sur iPhone : ouvre le lien dans Safari, puis Partager → Sur l'écran d'accueil.

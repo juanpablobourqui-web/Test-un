@@ -3,7 +3,7 @@ name: Publier l'application
 
 on:
   push:
-    branches: [main, claude/test-un-repo-setup-2ajz66]
+    branches: [claude/test-un-repo-setup-2ajz66]
   workflow_dispatch:
 
 permissions:
@@ -26,7 +26,7 @@ jobs:
       - name: Préparer les fichiers du site
         run: |
           mkdir _site
-          cp -r index.html manifest.webmanifest sw.js icons .nojekyll _site/
+          cp -r index.html manifest.webmanifest sw.js icons journee .nojekyll _site/
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
