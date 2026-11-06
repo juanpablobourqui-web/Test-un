@@ -6,7 +6,9 @@
 
 ## Utilisation
 
-Ouvre `index.html` dans ton navigateur (Chrome ou Edge conseillés). Rien à installer.
+Version en ligne : https://claude.ai/artifact/Jt2QuPXtJnq86EfMtnVana (le micro n'y fonctionne pas).
+
+Ou ouvre `index.html` dans ton navigateur (Chrome ou Edge conseillés). Rien à installer.
 
 - **📖 Apprendre** : liste des phrases par thème, avec la traduction, des astuces et l'audio.
 - **🃏 Cartes** : lis la phrase en français, dis-la en anglais, puis vérifie.
