@@ -21,3 +21,8 @@ L'icône **Parle Anglais** apparaît sur l'écran d'accueil. L'application s'ouv
 - **Révision** : toutes les phrases avec l'audio.
 
 La progression est enregistrée sur le téléphone.
+
+## Autres façons de l'ouvrir
+
+- Aperçu en ligne (sans micro) : https://claude.ai/artifact/Jt2QuPXtJnq86EfMtnVana
+- Sur ordinateur : télécharge `index.html` et ouvre-le dans Chrome ou Edge.
